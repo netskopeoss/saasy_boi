@@ -87,10 +87,16 @@ def imgur_upload_image(image_path, creds):
 
 
 def get_keys():
-    # TODO: Add urls for keys
+    # TODO: Have a better way to get keys - maybe CLI arguments
     # Could probably hard code the urls, but this makes it so we can just not commit the urls to the repo.
     # urls.txt one URL per line.
-    f = open("config/urls.txt")
+    # urls.txt should look like:
+    #     Slack <url to get slack token>
+    #     Slack <url to get slack token>
+    #     Twitter <url to get twitter keys>
+    #     Twiter <url to get twitter keys>
+    # Or however many tokens you have. 
+    f = open("urls.txt")
     urls = [line.strip().split(" ") for line in f]
     f.close()
     # Cover your tracks a little bit buddy
@@ -106,7 +112,7 @@ def get_keys():
                 headers=headers
             )
             key = r.text.strip()
-            if method != "Slack":
+            if method == "Twitter":
                 key = tuple(key.split(";"))
             return method, key
         except Exception:
